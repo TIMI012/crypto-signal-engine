@@ -1,6 +1,6 @@
 # backend/main.py
 from fastapi import FastAPI
-from signals import generate_signals
+from .signals import generate_signals  # Relative import
 
 app = FastAPI(title="Crypto Signal Engine")
 
