@@ -1,9 +1,12 @@
+# backend/signals.py
 import ccxt
 import pandas as pd
+from fastapi import FastAPI
 
 exchange = ccxt.binance()
-
 PAIRS = ["BTC/USDT", "ETH/USDT", "SOL/USDT"]
+
+app = FastAPI()
 
 def generate_signals():
     results = []
@@ -29,3 +32,8 @@ def generate_signals():
         })
 
     return results
+
+# FastAPI endpoint to fetch signals
+@app.get("/signals")
+def read_signals():
+    return generate_signals()
