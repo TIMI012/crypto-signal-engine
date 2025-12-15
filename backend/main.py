@@ -1,10 +1,12 @@
+# backend/main.py
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
-from .signals import generate_signals  # <-- relative import
+from .signals import generate_signals  # relative import
 
 app = FastAPI(title="Crypto Signal Engine")
 
-templates = Jinja2Templates(directory="templates")
+# Ensure templates path is relative to the repo root
+templates = Jinja2Templates(directory="../templates")  # <-- fixed for deployment
 
 @app.get("/")
 def home():
@@ -22,6 +24,12 @@ def signals():
 def dashboard(request: Request):
     try:
         signals_data = generate_signals()
-        return templates.TemplateResponse("dashboard.html", {"request": request, "signals": signals_data})
+        return templates.TemplateResponse(
+            "dashboard.html",
+            {"request": request, "signals": signals_data}
+        )
     except Exception as e:
-        return templates.TemplateResponse("dashboard.html", {"request": request, "signals": [], "error": str(e)})
+        return templates.TemplateResponse(
+            "dashboard.html",
+            {"request": request, "signals": [], "error": str(e)}
+        )
