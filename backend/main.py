@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
-from fastapi.staticfiles import StaticFiles
-from .signals import generate_signals
+from .signals import generate_signals  # <-- relative import
 
 app = FastAPI(title="Crypto Signal Engine")
 
