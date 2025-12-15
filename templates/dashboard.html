@@ -4,8 +4,8 @@
     <title>Crypto Signal Dashboard</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        table { border-collapse: collapse; width: 50%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
         th { background-color: #f2f2f2; }
         .BUY { color: green; font-weight: bold; }
         .SELL { color: red; font-weight: bold; }
@@ -13,7 +13,7 @@
     </style>
 </head>
 <body>
-    <h1>Crypto Signal Dashboard</h1>
+    <h2>Crypto Signal Dashboard</h2>
     {% if error %}
         <p style="color:red;">Error: {{ error }}</p>
     {% endif %}
