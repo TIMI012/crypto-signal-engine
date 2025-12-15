@@ -4,8 +4,8 @@ from backend.signals import generate_signals  # absolute import
 
 app = FastAPI(title="Crypto Signal Engine")
 
-# Ensure templates path is relative to the repo root
-templates = Jinja2Templates(directory="../templates")  # <-- fixed for deployment
+# Templates folder (make sure templates/dashboard.html exists)
+templates = Jinja2Templates(directory="templates")
 
 @app.get("/")
 def home():
@@ -28,6 +28,7 @@ def dashboard(request: Request):
             {"request": request, "signals": signals_data}
         )
     except Exception as e:
+        # Show empty dashboard with error message
         return templates.TemplateResponse(
             "dashboard.html",
             {"request": request, "signals": [], "error": str(e)}
