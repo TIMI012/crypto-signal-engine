@@ -1,14 +1,18 @@
+# backend/signals.py
+from fastapi import FastAPI
 import pandas as pd
 from binance.client import Client
 import os
 
-# Load your API keys from environment variables
+# Load API keys from environment variables
 API_KEY = os.getenv("BINANCE_API_KEY")
 API_SECRET = os.getenv("BINANCE_API_SECRET")
 
 client = Client(API_KEY, API_SECRET)
 
 PAIRS = ["BTCUSDT", "ETHUSDT", "SOLUSDT"]
+
+app = FastAPI()
 
 def generate_signals():
     results = []
@@ -24,9 +28,7 @@ def generate_signals():
         df["ema200"] = df["c"].ewm(span=200).mean()
 
         # Signal logic
-        if pd.isna(df["ema50"].iloc[-1]) or pd.isna(df["ema200"].iloc[-1]):
-            signal = "WAIT"
-        elif df["ema50"].iloc[-1] > df["ema200"].iloc[-1]:
+        if df["ema50"].iloc[-1] > df["ema200"].iloc[-1]:
             signal = "BUY"
         elif df["ema50"].iloc[-1] < df["ema200"].iloc[-1]:
             signal = "SELL"
@@ -40,3 +42,11 @@ def generate_signals():
         })
 
     return results
+
+# FastAPI endpoint
+@app.get("/signals")
+def read_signals():
+    try:
+        return {"success": True, "data": generate_signals()}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
